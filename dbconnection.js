@@ -25,6 +25,13 @@ var connection = mysql.createConnection({
 
 function createItem() {
     console.log("Add new item...\n");
+
+    inquirer.prompt({
+      type: 'input',
+      name: 'first_name',
+      message: "What's your first name"
+    });
+
     var query = connection.query(
       "INSERT INTO greatbay_db.auctions SET ?",
       {
@@ -38,6 +45,24 @@ function createItem() {
       }
     )
 };
+
+function addItemInfo() {
+inquirer.prompt([
+    {
+      type: 'input',
+      name: 'first_name',
+      message: "What's your first name"
+    },
+]).then(function(createItem) {
+
+
+});
+}
+
+
+
+
+
 
 inquirer.prompt([
     {
