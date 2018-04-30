@@ -23,41 +23,60 @@ var connection = mysql.createConnection({
 // FUNCTIONS
 // ====================
 
-function createItem() {
-    console.log("Add new item...\n");
+// function createItem() {
+//     console.log("Add new item...\n");
 
-    inquirer.prompt({
-      type: 'input',
-      name: 'first_name',
-      message: "What's your first name"
-    });
+//     inquirer.prompt({
+//       type: 'input',
+//       name: 'first_name',
+//       message: "What's your first name"
+//     });
 
-    var query = connection.query(
-      "INSERT INTO greatbay_db.auctions SET ?",
-      {
-        item_name: "Rocky Road",
-        category: "Ice Cream"
-      },
-      function(err, res) {
-        console.log(res.affectedRows + " product inserted!\n");
-        // Call updateProduct AFTER the INSERT completes
-        // updateProduct();
-      }
-    )
-};
+//     var query = connection.query(
+//       "INSERT INTO greatbay_db.auctions SET ?",
+//       {
+//         item_name: "Rocky Road",
+//         category: "Ice Cream"
+//       },
+//       function(err, res) {
+//         console.log(res.affectedRows + " product inserted!\n");
+//         // Call updateProduct AFTER the INSERT completes
+//         // updateProduct();
+//       }
+//     )
+// };
 
 function addItemInfo() {
-inquirer.prompt([
+var itemQuestions = inquirer.prompt([
     {
       type: 'input',
-      name: 'first_name',
-      message: "What's your first name"
+      name: 'item_name',
+      message: 'What are you selling?',
+    },
+    {
+      type: 'input',
+      name: 'category',
+      message: 'What is the category of the item?',
     },
 ]).then(function(createItem) {
-
-
+  var query = connection.query(
+    "INSERT INTO greatbay_db.auctions SET ?",
+    {
+      item_name: createItem.item_name,
+      category: createItem.category
+    },
+    function(err, res) {
+      // console.log(res.affectedRows + " product inserted!\n");
+      // Call updateProduct AFTER the INSERT completes
+      // updateProduct();
+    });
 });
-}
+};
+
+
+// QUESTIONS
+// What is the affectedRows
+
 
 
 
@@ -74,7 +93,7 @@ inquirer.prompt([
 ]).then(function(user) {
     // If the user guesses the password...
     if (user.userPrompt === "POST AN ITEM") {
-        createItem();
+        addItemInfo();
     } else if (user.userPrompt === "BID ON AN ITEM") {
         bidOnItem();
     }
